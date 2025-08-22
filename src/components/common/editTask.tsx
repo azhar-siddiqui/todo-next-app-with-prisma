@@ -1,5 +1,8 @@
+// components/common/editTask.tsx
 "use client";
-import { creatTaskActions } from "@/actions/create.action";
+import { Task } from "@/@types/task.types";
+// New action for updating tasks
+import { updateTaskAction } from "@/actions/update.action";
 import {
   Form,
   FormControl,
@@ -25,26 +28,37 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
-interface AddTaskProp {
+interface EditTaskProp {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  task: Task | null;
 }
 
-export default function AddTask({ open, setOpen }: Readonly<AddTaskProp>) {
+export default function EditTask({
+  open,
+  setOpen,
+  task,
+}: Readonly<EditTaskProp>) {
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof taskFormSchema>>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      completed: false,
+      title: task?.title || "",
+      description: task?.description || "",
+      completed: task?.completed || false,
     },
   });
 
+  // Check if form values have changed
+  const hasChanges =
+    form.watch("title") !== (task?.title || "") ||
+    form.watch("description") !== (task?.description || "");
+
   const onSubmit = (values: z.infer<typeof taskFormSchema>) => {
+    if (!task) return;
     startTransition(async () => {
-      const data = await creatTaskActions(values);
+      const data = await updateTaskAction(task.id, values);
 
       if (data.status === "error") {
         toast.error(data.message);
@@ -60,10 +74,8 @@ export default function AddTask({ open, setOpen }: Readonly<AddTaskProp>) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Task</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription>
+          <DialogTitle>Edit Task</DialogTitle>
+          <DialogDescription>Update the details of the task.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -97,8 +109,12 @@ export default function AddTask({ open, setOpen }: Readonly<AddTaskProp>) {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isPending}>
-              Submit
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isPending || !hasChanges}
+            >
+              Update
             </Button>
           </form>
         </Form>
