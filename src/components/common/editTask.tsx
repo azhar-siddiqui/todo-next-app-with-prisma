@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { taskFormSchema } from "@/validation/taskFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -45,9 +45,9 @@ export default function EditTask({
   const form = useForm<z.infer<typeof taskFormSchema>>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
-      title: task?.title || "",
-      description: task?.description || "",
-      completed: task?.completed || false,
+      title: "",
+      description: "",
+      completed: false,
     },
   });
 
@@ -70,6 +70,16 @@ export default function EditTask({
       }
     });
   };
+
+  useEffect(() => {
+    if (task) {
+      form.reset({
+        title: task.title || "",
+        description: task.description || "",
+        completed: task.completed || false,
+      });
+    }
+  }, [task, form]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
