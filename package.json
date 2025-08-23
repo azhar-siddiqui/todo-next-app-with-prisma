@@ -8,11 +8,6 @@
     "start": "next start",
     "lint": "eslint"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@prisma/client"
-    ]
-  },
   "dependencies": {
     "@clerk/nextjs": "^6.31.4",
     "@hookform/resolvers": "^5.2.1",
