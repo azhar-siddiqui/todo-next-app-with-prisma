@@ -1,20 +1,21 @@
 "use client";
 
 import { Task } from "@/@types/task.types";
-import { deleteTask } from "@/actions/delete.action";
-import { toggleTaskCompletion } from "@/actions/update.action";
+import { deleteTask } from "@/actions/taskAction/delete.action";
+import { toggleTaskCompletion } from "@/actions/taskAction/update.action";
+
 import EditTask from "@/components/common/editTask";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Eye, Pencil, Trash } from "lucide-react";

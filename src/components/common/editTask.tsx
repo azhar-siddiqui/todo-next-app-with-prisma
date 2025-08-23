@@ -2,7 +2,8 @@
 "use client";
 import { Task } from "@/@types/task.types";
 // New action for updating tasks
-import { updateTaskAction } from "@/actions/update.action";
+
+import { updateTaskAction } from "@/actions/taskAction/update.action";
 import {
   Form,
   FormControl,

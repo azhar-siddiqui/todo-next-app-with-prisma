@@ -1,12 +1,11 @@
 "use server";
 
-import { TaskActionState } from "@/lib/actions";
+import { TaskActionState } from "@/@types/task.types";
+import { prisma } from "@/lib/db";
 import { taskFormSchema } from "@/validation/taskFormSchema";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import z from "zod";
-import { PrismaClient } from "../generated/prisma";
-
-const prisma = new PrismaClient();
 
 export async function updateTaskAction(
   id: string,
@@ -81,8 +80,30 @@ export async function toggleTaskCompletion(
   id: string,
   completed: boolean
 ): Promise<TaskActionState> {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return {
+      success: false,
+      status: "error",
+      message: "You must be logged in to update a task.",
+    };
+  }
+
   try {
-    const task = await prisma.task.update({
+    const task = await prisma.task.findUnique({
+      where: { id, userId },
+    });
+
+    if (!task) {
+      return {
+        success: false,
+        status: "error",
+        message: "Task not found or you do not have permission to update it.",
+      };
+    }
+
+    const updatedTask = await prisma.task.update({
       where: { id },
       data: { completed },
     });
@@ -92,7 +113,7 @@ export async function toggleTaskCompletion(
       success: true,
       status: "success",
       message: `Task marked as ${completed ? "completed" : "uncompleted"}`,
-      task,
+      task: updatedTask,
     };
   } catch (error) {
     return {

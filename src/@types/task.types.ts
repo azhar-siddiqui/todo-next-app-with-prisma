@@ -6,3 +6,10 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type TaskActionState = {
+  success: boolean;
+  status: "success" | "error";
+  message?: string;
+  task?: Task;
+};
