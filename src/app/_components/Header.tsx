@@ -16,9 +16,16 @@ export default function Header() {
 
   return (
     <header className="w-full flex items-center justify-end py-2 px-4">
-      <div className="ml-auto">
-        <UserButton />
-      </div>
+      <UserButton
+        appearance={{
+          elements: {
+            userButtonAvatarBox: {
+              width: "40px",
+              height: "40px",
+            },
+          },
+        }}
+      />
     </header>
   );
 }

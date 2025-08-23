@@ -12,11 +12,11 @@ export default function ClerkProviderWrapper({
 
   if (!isLoaded) {
     return (
-      <div className="w-full min-h-[calc(100vh-60px)] flex items-center justify-center">
+      <div className="w-full min-h-[calc(100vh-56px)] flex items-center justify-center">
         <Skeleton className="w-full max-w-xl mx-4 h-56" />
       </div>
     );
   }
 
-  return <>{children}</>;
+  return children;
 }

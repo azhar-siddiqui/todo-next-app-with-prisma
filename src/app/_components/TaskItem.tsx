@@ -86,11 +86,16 @@ export const TaskItem = ({ task }: { task: Task }) => {
               variant="outline"
               className="w-full flex justify-start"
               onClick={() => setEditOpen(true)}
+              disabled={isPending}
             >
               <Pencil />
               Edit Task
             </Button>
-            <Button variant="outline" className="w-full flex justify-start">
+            <Button
+              variant="outline"
+              className="w-full flex justify-start"
+              disabled={isPending}
+            >
               <Eye />
               View Task
             </Button>
@@ -98,6 +103,7 @@ export const TaskItem = ({ task }: { task: Task }) => {
               variant="outline"
               className="w-full flex justify-start"
               onClick={handleDelete}
+              disabled={isPending}
             >
               <Trash className="text-red-400" />
               Delete Task

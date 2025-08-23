@@ -8,7 +8,7 @@ import { Trigger } from "./_components/Trigger";
 export default async function Home() {
   const tasks = await getTasks();
   return (
-    <div className="w-full min-h-[calc(100vh-50px)] flex items-center justify-center">
+    <div className="w-full min-h-[calc(100vh-56px)] flex items-center justify-center">
       <Card className="w-full max-w-xl mx-4">
         <CardHeader className="border-b">
           <CardTitle className="w-full sm:flex items-center justify-between">
