@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/provider/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -33,9 +34,16 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           suppressHydrationWarning
         >
-          <Header />
-          <ClerkProviderWrapper>{children}</ClerkProviderWrapper>
-          <Toaster closeButton duration={1000} position="top-right" />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <ClerkProviderWrapper>{children}</ClerkProviderWrapper>
+            <Toaster closeButton duration={1000} position="top-right" />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
